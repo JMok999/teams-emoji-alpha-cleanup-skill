@@ -1,22 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
-  <title id="title">Teams emoji validation backgrounds</title>
-  <desc id="desc">A clean transparent emoji tested on white, Teams light gray, dark gray, and black backgrounds.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Teams emoji validation backgrounds / Teams 表情背景验证</title>
+  <desc id="desc">A transparent emoji tested on white, Teams light gray, dark gray, and black backgrounds. 透明表情在白底、Teams 浅色、深灰和黑底上的验证。</desc>
   <defs>
     <radialGradient id="face" cx="35%" cy="25%"><stop stop-color="#fff7aa"/><stop offset=".65" stop-color="#ffcf36"/><stop offset="1" stop-color="#f39712"/></radialGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#101828" flood-opacity=".20"/></filter>
   </defs>
-  <rect width="1200" height="520" rx="28" fill="#f7f8fb"/>
-  <text x="70" y="72" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="#1f2937">Transparency validation surfaces</text>
-  <text x="70" y="112" font-family="Arial, sans-serif" font-size="20" fill="#667085">A Teams-ready result should stay clean on every background</text>
-  <g transform="translate(70 150)">
-    <g><rect width="240" height="260" rx="22" fill="#ffffff" stroke="#d0d5dd" stroke-width="2"/><text x="20" y="230" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#344054">White</text></g>
-    <g transform="translate(275)"><rect width="240" height="260" rx="22" fill="#eceef6" stroke="#d0d5dd" stroke-width="2"/><text x="20" y="230" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#344054">Teams light</text></g>
-    <g transform="translate(550)"><rect width="240" height="260" rx="22" fill="#242424"/><text x="20" y="230" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Dark gray</text></g>
-    <g transform="translate(825)"><rect width="240" height="260" rx="22" fill="#000000"/><text x="20" y="230" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Black</text></g>
+  <rect width="1200" height="560" rx="28" fill="#f7f8fb"/>
+  <text x="70" y="70" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="36" font-weight="700" fill="#1f2937">Transparency Validation Surfaces</text>
+  <text x="70" y="108" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="20" fill="#667085">透明背景验证界面：浅色与深色背景下均应保持干净</text>
+  <g transform="translate(70 155)">
+    <g><rect width="240" height="270" rx="22" fill="#ffffff" stroke="#d0d5dd" stroke-width="2"/><text x="20" y="232" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#344054">White · 白底</text><text x="20" y="255" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="14" fill="#667085">No white box · 无白框</text></g>
+    <g transform="translate(275)"><rect width="240" height="270" rx="22" fill="#eceef6" stroke="#d0d5dd" stroke-width="2"/><text x="20" y="232" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#344054">Teams light · Teams 浅色</text><text x="20" y="255" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="14" fill="#667085">No fringe · 无边缘残留</text></g>
+    <g transform="translate(550)"><rect width="240" height="270" rx="22" fill="#242424"/><text x="20" y="232" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#ffffff">Dark gray · 深灰</text><text x="20" y="255" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="14" fill="#d0d5dd">No halo · 无白边</text></g>
+    <g transform="translate(825)"><rect width="240" height="270" rx="22" fill="#000000"/><text x="20" y="232" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#ffffff">Black · 黑底</text><text x="20" y="255" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="14" fill="#d0d5dd">Clean alpha · 透明干净</text></g>
     <g transform="translate(50 42)" filter="url(#shadow)"><circle cx="70" cy="70" r="64" fill="url(#face)"/><path d="M31 39 Q49 28 63 39 M80 39 Q94 28 110 39" fill="none" stroke="#5b371e" stroke-width="7" stroke-linecap="round"/><ellipse cx="45" cy="68" rx="17" ry="21" fill="#fff"/><ellipse cx="94" cy="68" rx="17" ry="21" fill="#fff"/><circle cx="47" cy="70" r="7" fill="#2b1b12"/><circle cx="92" cy="70" r="7" fill="#2b1b12"/><path d="M45 108 Q70 129 98 108" fill="none" stroke="#6f381b" stroke-width="6" stroke-linecap="round"/></g>
     <g transform="translate(325 42)" filter="url(#shadow)"><circle cx="70" cy="70" r="64" fill="url(#face)"/><path d="M31 39 Q49 28 63 39 M80 39 Q94 28 110 39" fill="none" stroke="#5b371e" stroke-width="7" stroke-linecap="round"/><ellipse cx="45" cy="68" rx="17" ry="21" fill="#fff"/><ellipse cx="94" cy="68" rx="17" ry="21" fill="#fff"/><circle cx="47" cy="70" r="7" fill="#2b1b12"/><circle cx="92" cy="70" r="7" fill="#2b1b12"/><path d="M45 108 Q70 129 98 108" fill="none" stroke="#6f381b" stroke-width="6" stroke-linecap="round"/></g>
     <g transform="translate(600 42)" filter="url(#shadow)"><circle cx="70" cy="70" r="64" fill="url(#face)"/><path d="M31 39 Q49 28 63 39 M80 39 Q94 28 110 39" fill="none" stroke="#5b371e" stroke-width="7" stroke-linecap="round"/><ellipse cx="45" cy="68" rx="17" ry="21" fill="#fff"/><ellipse cx="94" cy="68" rx="17" ry="21" fill="#fff"/><circle cx="47" cy="70" r="7" fill="#2b1b12"/><circle cx="92" cy="70" r="7" fill="#2b1b12"/><path d="M45 108 Q70 129 98 108" fill="none" stroke="#6f381b" stroke-width="6" stroke-linecap="round"/></g>
     <g transform="translate(875 42)" filter="url(#shadow)"><circle cx="70" cy="70" r="64" fill="url(#face)"/><path d="M31 39 Q49 28 63 39 M80 39 Q94 28 110 39" fill="none" stroke="#5b371e" stroke-width="7" stroke-linecap="round"/><ellipse cx="45" cy="68" rx="17" ry="21" fill="#fff"/><ellipse cx="94" cy="68" rx="17" ry="21" fill="#fff"/><circle cx="47" cy="70" r="7" fill="#2b1b12"/><circle cx="92" cy="70" r="7" fill="#2b1b12"/><path d="M45 108 Q70 129 98 108" fill="none" stroke="#6f381b" stroke-width="6" stroke-linecap="round"/></g>
   </g>
-  <text x="70" y="468" font-family="Arial, sans-serif" font-size="18" fill="#027a48">Pass condition: no white box, no light halo, no colored fringe, and no baked checkerboard texture.</text>
+  <text x="70" y="490" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="18" fill="#027a48">Pass condition: no white box, no light halo, no colored fringe, no baked checkerboard · 通过标准：无白框、无白边、无彩边、无棋盘格</text>
 </svg>
