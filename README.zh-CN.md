@@ -4,59 +4,37 @@
 
 ## 这个项目做什么
 
-这个仓库只有一个正式 Skill，用于将已有的表情包、头像、贴纸、图标或简单插画，处理成可用于 **Microsoft Teams 自定义 Emoji** 的文件。
+这个仓库只有一个正式 Skill，用于把已有的表情包、头像、贴纸、图标或简单插画处理成可用于 Microsoft Teams 自定义 Emoji 的文件。
 
-这是一个基于原图的编辑流程。它会保留原有主体，而不是重新绘制或改造成另一种风格。
+它是一个素材清理流程。它会保留选择的原图主体，不会重新绘制，也不会改造成另一种风格。
 
-**最终目标：** 一个经过验证的 `256 × 256` lossless WEBP，带有真实 RGBA Alpha 透明通道、干净的抗锯齿边缘、被保留的内部白色细节，并且没有白框或白边。
+**最终目标：** 一个 `256 × 256` 的透明 WEBP，边缘干净、留白合理，并且在 Teams 中没有明显白框或白边。
 
 ## 预览
 
 ### 处理前 → 处理后
 
-图片在本地看似透明，上传 Teams 后仍可能出现白色方框。本流程只移除与画布边缘连通的背景，同时保留眼白、反光、牙齿等内部白色细节。
-
 ![处理前后](docs/images/before-after-teams.svg)
 
 ### 背景验证
 
-合格的 Teams 表情在浅色和深色背景下都应保持干净，不应出现白框、白边、彩色边缘或棋盘格。
-
 ![背景验证](docs/images/validation-backgrounds.svg)
 
-## 一个正式 Skill，加一个可选 Prompt Pack
+## 从这里开始
 
-这个仓库刻意只保留一个正式 Skill：
+### ChatGPT、Claude 或其他聊天模型
 
-- [`SKILL.md`](SKILL.md)：负责原图透明处理、技术验证和 Teams 文件导出。
+普通的单张图片需求，上传原图后，直接使用短提示：
 
-同时提供一个可选的创作资源：
+- [聊天短提示](prompts/teams-emoji-quick.zh-CN.md)
 
-- [`prompts/teams-emoji-creator-prompts.md`](prompts/teams-emoji-creator-prompts.md)：轻量级的原创工作场景反应表情 Prompt Pack。
+这是默认路径。它要求模型直接处理图片、不要输出长篇流程说明，并以简短回复返回可下载文件。
 
-Prompt Pack 不是第二个正式 Skill。ChatGPT、Claude 和其他图片生成工具本来就能通过自然语言生成新的视觉概念。它的作用只是让同事更快写出适合工作场景反应表情的提示词，并让一组表情保持更一致的视觉方向。
+只有在结果失败、需要排查限制、或要比较不同工具支持度时，才阅读完整的 [ChatGPT / Claude 使用指南](docs/CHATGPT_CLAUDE_GUIDE.md)。
 
-生成出来的概念图不自动等于可上传 Teams 的文件。选定创作图后，请下载源图，并使用 `SKILL.md` 的正式流程完成透明处理与技术验证。
+### 本地 Python 或具备文件操作能力的 Agent
 
-## 选择合适的使用方式
-
-| 你的目标 | 建议方式 | 可靠性 |
-|---|---|---|
-| 想创作一个新的表情概念 | 使用可选的 [Prompt Pack](prompts/teams-emoji-creator-prompts.md) | 适合创意探索，不保证可直接上传 Teams |
-| 想完整保留已有表情的原貌并去除背景 | 使用 [`SKILL.md`](SKILL.md) 和原图 | 原图保留与透明处理必需流程 |
-| 主要使用 ChatGPT、Claude 或其他聊天模型 | 同时上传原图与 `SKILL.md`，再阅读 [ChatGPT / Claude 使用指南](docs/CHATGPT_CLAUDE_GUIDE.md) | 下载文件通过验证前，可靠性有限 |
-| 可在本地运行 Python | 使用仓库附带的 helper script | 平面或接近平面背景时可靠性较高 |
-| 使用 Codex 或其他具备文件操作能力的 Agent | 提供原图和 `SKILL.md`，并要求进行技术验证 | 完成验证后可靠性较高 |
-
-> 只贴 GitHub 链接，不代表聊天模型真的读过 Skill。不要把重新生成的插画、聊天界面的预览图或棋盘格 mockup 当成可用于 Teams 的文件。
-
-## ChatGPT 与 Claude 用户
-
-在仅使用聊天模型的环境中测试前，请先阅读 [ChatGPT / Claude 使用指南](docs/CHATGPT_CLAUDE_GUIDE.md)。
-
-指南说明了如何同时上传原图与 `SKILL.md`、如何在生成前进行预检、如何识别“看似完成但其实失败”的情况，以及为什么没有可下载、可验证的 WebP 文件时不应接受结果。
-
-## 快速开始
+重复处理或需要完整技术规范时，使用 [`SKILL.md`](SKILL.md) 和仓库中的 helper。
 
 ```bash
 git clone https://github.com/JMok999/teams-emoji-alpha-cleanup-skill.git
@@ -65,45 +43,51 @@ python -m pip install -r requirements.txt
 python scripts/clean_teams_emoji.py input.jpg input_teams_emoji_256.webp
 ```
 
-工具可处理 Pillow 能读取的静态栅格图片，包括 JPG、PNG、WEBP、BMP、TIFF，以及 GIF 的第一帧。
+## 一个正式 Skill，加一个可选 Prompt Pack
 
-### 可选参数
+- [`SKILL.md`](SKILL.md)：原图透明处理、文件检查与 Teams 导出规则。
+- [`prompts/teams-emoji-creator-prompts.md`](prompts/teams-emoji-creator-prompts.md)：可选的原创工作场景反应表情 Prompt Pack。
 
-```bash
-python scripts/clean_teams_emoji.py INPUT_IMAGE OUTPUT.webp \
-  --size 256 \
-  --padding 0.10 \
-  --tolerance 34 \
-  --edge-softness 0.55
-```
+Prompt Pack 不是第二个 Skill，只用于创意探索。生成概念图不自动等于 Teams 成品；选定图片后，仍需通过正式清理流程才能交付。
 
-| 参数 | 默认值 | 说明 |
-|---|---:|---|
-| `--size` | `256` | 最终方形画布尺寸。Teams 输出固定为 256 × 256。 |
-| `--padding` | `0.10` | 透明边距，建议范围为 0.08 至 0.12。 |
-| `--tolerance` | `34` | 外部背景识别容差。 |
-| `--edge-softness` | `0.55` | Alpha 边缘平滑程度。 |
+## 选择合适的使用方式
+
+| 目标 | 使用方式 | 接受标准 |
+|---|---|---|
+| 创作新的反应表情概念 | [Prompt Pack](prompts/teams-emoji-creator-prompts.md) | 只用于创意，不自动是 Teams 文件 |
+| 保留已有表情并去除背景 | [`SKILL.md`](SKILL.md) | 主体保持与原图一致 |
+| 在 ChatGPT 或 Claude 中处理单张图片 | [聊天短提示](prompts/teams-emoji-quick.zh-CN.md) | 只接受实际能在 Teams 使用的下载文件 |
+| 重复或技术型处理 | Python helper 或具备文件操作能力的 Agent | 运行文件检查与视觉验证 |
 
 ## 输出标准
 
-| 项目 | 标准 |
+| 项目 | 要求 |
 |---|---|
-| 格式 | Lossless WEBP |
-| 画布 | 必须为 256 × 256 px |
-| 透明度 | 真实 RGBA Alpha 通道 |
+| 文件 | WEBP |
+| 画布 | 256 × 256 px |
+| 透明度 | 能检查元数据时必须是真实 Alpha |
 | 留白 | 约 8–12% 透明边距 |
-| 主体 | 完整、居中、不可重绘 |
-| 边缘 | 平滑、已清理白色蒙版污染、无白边与灰边 |
-| 验证背景 | `#FFFFFF`、`#ECEEF6`、`#242424`、`#000000` |
+| 主体 | 完整、居中、不可重新设计 |
+| 边缘 | 无白框、白边、灰边或棋盘格残留 |
+| 检查背景 | `#FFFFFF`、`#ECEEF6`、`#242424`、`#000000` |
 
-## 清理流程的工作方式
+## 验证与回归测试
 
-1. 检查原图，并选择边缘连通分割、语义分割或人工蒙版。
-2. 只删除与图片边缘连通的外部背景。
-3. 保留眼白、反光、牙齿、Logo 等被主体包围的白色细节。
-4. 建立干净的 Alpha 蒙版，并清除半透明边缘的白色蒙版残留。
-5. 将完整主体放入带安全留白的 256 × 256 画布。
-6. 验证实际导出的文件，并检查不同背景预览。
+运行确定性的 helper 测试：
+
+```bash
+python -m pip install -r requirements.txt
+python tests/test_helper.py
+```
+
+测试图目录、预期行为，以及聊天模型的人工兼容性测试说明见 [Self Test](tests/SELF_TEST.zh-CN.md)。
+
+## 限制
+
+- 参考 helper 主要适合平面或接近平面背景。
+- 复杂照片、发丝、毛发、玻璃、烟雾或透明材质，需要语义分割或人工优化蒙版。
+- 预览图不等于文件。聊天工具无法返回下载文件，就代表任务尚未完成。
+- 聊天工具能返回下载文件但无法显示元数据时，请先上传 Teams 测试，再称为已验证。
 
 ## 项目结构
 
@@ -114,26 +98,21 @@ teams-emoji-alpha-cleanup-skill/
 ├─ SKILL.md
 ├─ requirements.txt
 ├─ docs/
+│  ├─ CHATGPT_CLAUDE_GUIDE.en.md
 │  ├─ CHATGPT_CLAUDE_GUIDE.md
 │  └─ images/
-│     ├─ before-after-teams.svg
-│     └─ validation-backgrounds.svg
 ├─ prompts/
+│  ├─ chatgpt-teams-emoji-quick-prompt.en.md
+│  ├─ teams-emoji-quick.zh-CN.md
 │  └─ teams-emoji-creator-prompts.md
-└─ scripts/
-   └─ clean_teams_emoji.py
+├─ scripts/
+│  └─ clean_teams_emoji.py
+└─ tests/
+   ├─ generate_fixtures.py
+   ├─ test_helper.py
+   ├─ SELF_TEST.md
+   └─ SELF_TEST.zh-CN.md
 ```
-
-## 规则来源
-
-`SKILL.md` 是 Agent 的唯一执行规范，其中包含依赖、支持格式、默认参数、源文件可用性、fallback、文件命名与技术验收条件。
-
-## 限制
-
-- 参考 helper 主要适合平面或接近平面背景。
-- 复杂照片场景、发丝、毛发、玻璃、烟雾或透明材质，需要语义分割或人工优化蒙版。
-- 无法生成并验证真实透明 WEBP 的工具，不应声称结果已经可用于 Teams。
-- 聊天模型中的图片预览不等于真实透明文件。
 
 ## License
 
