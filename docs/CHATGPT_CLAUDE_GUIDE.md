@@ -2,86 +2,69 @@
 
 这份指南适合主要使用 ChatGPT、Claude 或其他聊天式 GenAI 的同事。
 
-它的目标不是让聊天模型“画一张看起来像的表情”，而是尽可能让模型遵守原图编辑、透明背景和 Teams 文件规格。更重要的是：当聊天界面做不到真实图片编辑或无法导出可验证文件时，应该明确停止，而不是输出一张看似成功的新图。
+## 默认先走短流程
 
-## 先理解限制
+日常使用时，上传原图后，直接复制以下短提示文件中的内容：
 
-不是每个聊天模型、免费方案或网页界面都能做到以下全部事情：
+[`../prompts/teams-emoji-quick.zh-CN.md`](../prompts/teams-emoji-quick.zh-CN.md)
 
-1. 读取 GitHub 链接中的 Skill 内容。
-2. 对上传原图进行像素级编辑，而不是重新生成。
-3. 导出可下载的、带真实 Alpha 通道的 lossless WEBP。
-4. 验证文件确实为 256 × 256，且透明背景没有白边。
+不要默认要求模型先总结 `SKILL.md`、解释算法或完成一大段预检报告。对于单张简单图片，这些步骤只会增加回复长度，不会提升最终文件质量。
 
-因此，**只贴 GitHub 链接并要求“按 Skill 做”并不可靠。** 如果模型没有真正读到 `SKILL.md`，或只能生成一张预览图，不能把它视为完成。
+## 需要上传什么
 
-## 推荐操作方式
+1. 原始图片文件。
+2. 上面的短提示。
 
-1. 下载或保存仓库中的 `SKILL.md`。
-2. 准备需要处理的原始图片文件。
-3. 在 ChatGPT、Claude 或其他聊天模型中，同时上传：
-   - 原始图片
-   - `SKILL.md`
-4. 粘贴下面的指令。
-5. 只有在模型提供可下载文件时才继续检查。没有可下载的 WebP 文件时，结果仅能算视觉预览，不算 Teams 成品。
+只有在以下场景才建议上传完整 `SKILL.md`：需要详细技术规范、使用 Agent 或本地工具、或要排查失败原因。
 
-## 可直接复制的指令
+## 如何接受或拒绝结果
+
+只有同时满足以下条件，才接受结果：
+
+- 返回可下载文件；
+- 文件扩展名为 `.webp`；
+- 主体仍与选择的原图一致；
+- 上传 Teams 后没有白框、白边或灰边。
+
+聊天界面中的预览图或棋盘格显示，不是最终文件。
+
+## 聊天工具无法完成时
+
+模型应该只用一句话说明并停止。它不应该重新生成一个相似表情、不应该输出长篇解释，也不应该声称文件已经通过验证。
+
+示例：
 
 ```text
-Read the uploaded SKILL.md completely before doing anything.
-
-Use the uploaded image as the exact source. This is a source-pixel image-editing and technical asset-export task, not a text-to-image generation task.
-
-Do not redraw, restyle, reinterpret, enhance creatively, or generate a replacement emoji. Preserve the original subject exactly.
-
-First confirm that you can edit the supplied source image and return a downloadable 256 × 256 lossless WEBP with a real RGBA alpha channel. If you cannot verify that capability, do not generate a substitute image. Reply only that a verified Teams-ready export is unsupported in this environment.
-
-If the capability is available, follow SKILL.md exactly. Before delivery, verify:
-- 256 × 256 px
-- lossless WEBP
-- real RGBA alpha channel
-- outer canvas border alpha = 0
-- 8–12% transparent padding
-- no white box, white halo, gray fringe, checkerboard, or opaque background
-- output is an edit of the uploaded source image, not a newly generated illustration
-
-Return the downloadable final file only after those checks pass.
+当前无法将该图片作为可编辑原图处理，或无法在此聊天中返回可下载的 Teams 文件。
 ```
 
-## 正确行为与失败信号
+## 可选诊断提示
 
-### 可以继续的信号
+仅在首次尝试失败后使用，不要作为默认第一步：
 
-- 模型确认已读取上传的 `SKILL.md`。
-- 模型明确把任务称为“编辑原图 / 移除背景”，而不是“生成一个表情”。
-- 模型说明会输出文件，而不是只有对话中的图片预览。
-- 模型能够解释如何验证 Alpha、尺寸和 WebP。
+```text
+请阅读上传的 SKILL.md，诊断为什么当前图片无法返回可下载的 Teams WebP。
+回复不超过五个要点，不要生成替代图片。
+```
 
-### 应该停止的信号
+## 可靠性说明
 
-- 模型说无法读取 GitHub 链接，但随后仍直接生成图片。
-- 模型生成了新的 3D、插画或不同表情风格。
-- 结果带渐变、纯色、白色或棋盘格背景。
-- 模型只显示聊天内图片预览，无法给出文件。
-- 模型把“看起来透明”当作“已经有 RGBA Alpha”。
-- 模型声称完成，却无法确认 WebP、尺寸或透明通道。
-
-## 最终验证清单
-
-拿到文件后，至少检查：
-
-- 文件扩展名是否为 `.webp`
-- 是否为 256 × 256 px
-- 上传 Teams 后是否出现白框、白边或灰边
-- 在白底、Teams 浅色、深灰和黑底上是否都干净
-- 主体是否与原图一致，而不是被重新设计
-
-## 可靠性建议
-
-| 使用方式 | 适合用途 | 结果可信度 |
+| 使用方式 | 适合场景 | 可靠性 |
 |---|---|---|
-| 只贴 GitHub 链接 | 让模型了解项目大概用途 | 低 |
-| 上传原图 + `SKILL.md` | 测试聊天模型能否遵守编辑约束 | 中 |
-| 使用 Python helper 或 Codex / Agent | 生成并验证真实 Teams 文件 | 高 |
+| 原图 + 短提示 | 单张图片的聊天式处理 | 取决于最终下载文件与实际 Teams 上传结果 |
+| 原图 + `SKILL.md` | 诊断或需要完整技术流程 | 规则更完整，但上下文成本更高 |
+| Python helper | 可复现的平面背景处理 | 高 |
+| 具备文件操作能力的 Agent | 自动处理与文件元数据检查 | 完成验证后较高 |
 
-聊天模型可以作为体验和前期测试工具；需要稳定交付给 Teams 使用时，优先使用仓库中的 Python helper 或具备文件操作能力的 Agent。
+## 技术验证
+
+当工具能够显示文件元数据时，检查：
+
+- 是否为 WEBP
+- 是否为 256 × 256
+- 是否存在 Alpha 通道
+- 画布最外圈是否透明
+
+当工具无法显示文件元数据，但能返回可下载文件时，将它视为 Teams 候选文件。请实际上传 Teams，并在白底、Teams 浅色、深灰、黑底上检查。
+
+确定性回归测试见 [`../tests/SELF_TEST.zh-CN.md`](../tests/SELF_TEST.zh-CN.md)。
