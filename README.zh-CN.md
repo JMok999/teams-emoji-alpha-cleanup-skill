@@ -117,4 +117,4 @@ teams-emoji-alpha-cleanup-skill/
 
 ## License
 
-当前尚未加入 License。准备对外分发或接受外部贡献前，请补充 License。
+本项目采用 [MIT License](LICENSE) 开源。
