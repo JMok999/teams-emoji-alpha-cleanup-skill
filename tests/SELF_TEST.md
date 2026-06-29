@@ -72,4 +72,4 @@ ChatGPT, Claude, and similar tools are not deterministic test runners. Test them
 For everyday use, start with the short prompt in:
 
 - [`../prompts/chatgpt-teams-emoji-quick-prompt.en.md`](../prompts/chatgpt-teams-emoji-quick-prompt.en.md)
-- [`../prompts/chatgpt-teams-emoji-quick-prompt.zh-CN.md`](../prompts/chatgpt-teams-emoji-quick-prompt.zh-CN.md)
+- [`../prompts/teams-emoji-quick.zh-CN.md`](../prompts/teams-emoji-quick.zh-CN.md)
