@@ -44,7 +44,7 @@ A generated concept is not automatically a Teams-ready file. Download the select
 |---|---|---|
 | Create a new emoji concept | Use the optional [Prompt Pack](prompts/teams-emoji-creator-prompts.md) | Good for creative exploration only |
 | Preserve an existing emoji exactly and remove its background | Use [`SKILL.md`](SKILL.md) with the original image | Required for source-faithful cleanup |
-| Mainly use ChatGPT, Claude, or another chat model | Upload the original image and `SKILL.md`, then follow the [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.md) | Limited until a downloadable file is verified |
+| Mainly use ChatGPT, Claude, or another chat model | Upload the original image and `SKILL.md`, then follow the [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.en.md) | Limited until a downloadable file is verified |
 | Run Python locally | Use the included helper script | High for flat or nearly flat backgrounds |
 | Use Codex or another file-capable agent | Provide the source image and `SKILL.md`, then require technical verification | High when validation checks are performed |
 
@@ -52,7 +52,7 @@ A generated concept is not automatically a Teams-ready file. Download the select
 
 ## ChatGPT and Claude users
 
-Read the [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.md) before testing in a chat-only environment.
+Read the [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.en.md) before testing in a chat-only environment.
 
 The guide explains how to upload the original image and `SKILL.md`, run a preflight check before any generation, recognize false-success signals, and reject a result that is not a downloadable, verifiable WebP file.
 
@@ -114,6 +114,7 @@ teams-emoji-alpha-cleanup-skill/
 ├─ SKILL.md
 ├─ requirements.txt
 ├─ docs/
+│  ├─ CHATGPT_CLAUDE_GUIDE.en.md
 │  ├─ CHATGPT_CLAUDE_GUIDE.md
 │  └─ images/
 │     ├─ before-after-teams.svg
