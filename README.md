@@ -4,59 +4,37 @@
 
 ## Purpose
 
-This repository contains one formal Skill for converting an existing emoji, sticker, avatar, icon, or simple illustration into a **Microsoft Teams-ready custom emoji**.
+This repository has one formal Skill for converting an existing emoji, sticker, avatar, icon, or simple illustration into a Microsoft Teams-ready custom emoji.
 
-It is a source-image editing workflow. It preserves the original subject instead of redrawing or creatively reinterpreting it.
+It is an asset-cleanup workflow. It preserves the selected source image instead of redrawing or creatively reinterpreting it.
 
-**Target output:** a verified 256 × 256 lossless WEBP with real RGBA alpha, clean anti-aliased edges, preserved internal white details, and no white box or halo.
+**Target output:** a 256 × 256 transparent WEBP with clean edges, safe padding, and no visible box or halo in Teams.
 
 ## Preview
 
 ### Before → After
 
-A file can look transparent locally but still display a white rectangle in Teams. This workflow removes only the exterior-connected background while preserving intended white details inside the emoji.
-
 ![Before and after](docs/images/before-after-teams.svg)
 
 ### Validation backgrounds
 
-A Teams-ready emoji should remain clean on light and dark surfaces. No white box, white halo, colored fringe, or checkerboard pattern should be visible.
-
 ![Validation backgrounds](docs/images/validation-backgrounds.svg)
 
-## One formal Skill, plus an optional Prompt Pack
+## Start here
 
-The repository intentionally has one formal Skill:
+### ChatGPT, Claude, or another chat model
 
-- [`SKILL.md`](SKILL.md): source-image cleanup, technical validation, and Teams asset export.
+For ordinary one-image requests, upload the original image and use the short prompt:
 
-It also includes one optional creative resource:
+- [Chat quick prompt](prompts/chatgpt-teams-emoji-quick-prompt.en.md)
 
-- [`prompts/teams-emoji-creator-prompts.md`](prompts/teams-emoji-creator-prompts.md): a lightweight prompt pack for creating original workplace reaction-emoji concepts.
+This is the default path. It instructs the model to process directly, avoid a long explanation, and return a short response with a downloadable file.
 
-The Prompt Pack is not a second formal Skill. Image-generation tools can already create original concepts from natural language. The pack helps colleagues start with clearer prompts and keep a consistent visual direction.
+Use the detailed [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.en.md) only when a result fails, you need to diagnose a limitation, or you want to compare tool support.
 
-A generated concept is not automatically a Teams-ready file. Download the selected source image and run it through `SKILL.md` before treating it as a final Teams asset.
+### Local Python or a file-capable agent
 
-## Choose the right path
-
-| Situation | Recommended path | Reliability |
-|---|---|---|
-| Create a new emoji concept | Use the optional [Prompt Pack](prompts/teams-emoji-creator-prompts.md) | Good for creative exploration only |
-| Preserve an existing emoji exactly and remove its background | Use [`SKILL.md`](SKILL.md) with the original image | Required for source-faithful cleanup |
-| Mainly use ChatGPT, Claude, or another chat model | Upload the original image and `SKILL.md`, then follow the [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.en.md) | Limited until a downloadable file is verified |
-| Run Python locally | Use the included helper script | High for flat or nearly flat backgrounds |
-| Use Codex or another file-capable agent | Provide the source image and `SKILL.md`, then require technical verification | High when validation checks are performed |
-
-> A GitHub link alone is not proof that a chat model has read the Skill. Do not accept a newly generated illustration, a chat preview, or a checkerboard mockup as a Teams-ready file.
-
-## ChatGPT and Claude users
-
-Read the [ChatGPT / Claude Guide](docs/CHATGPT_CLAUDE_GUIDE.en.md) before testing in a chat-only environment.
-
-The guide explains how to upload the original image and `SKILL.md`, run a preflight check before any generation, recognize false-success signals, and reject a result that is not a downloadable, verifiable WebP file.
-
-## Quick start
+Use [`SKILL.md`](SKILL.md) for the full technical contract and the bundled helper for repeatable processing.
 
 ```bash
 git clone https://github.com/JMok999/teams-emoji-alpha-cleanup-skill.git
@@ -65,45 +43,51 @@ python -m pip install -r requirements.txt
 python scripts/clean_teams_emoji.py input.jpg input_teams_emoji_256.webp
 ```
 
-The helper accepts static raster images readable by Pillow, including JPG, PNG, WEBP, BMP, TIFF, and the first frame of GIF files.
+## One formal Skill, plus an optional Prompt Pack
 
-### Optional parameters
+- [`SKILL.md`](SKILL.md): source-image cleanup, metadata checks, and Teams export rules.
+- [`prompts/teams-emoji-creator-prompts.md`](prompts/teams-emoji-creator-prompts.md): optional prompts for original workplace reaction-emoji concepts.
 
-```bash
-python scripts/clean_teams_emoji.py INPUT_IMAGE OUTPUT.webp \
-  --size 256 \
-  --padding 0.10 \
-  --tolerance 34 \
-  --edge-softness 0.55
-```
+The Prompt Pack is not a second Skill. It is for creative exploration. A generated concept is not automatically a Teams-ready file; download the chosen image and process it through the cleanup workflow before delivery.
 
-| Option | Default | Meaning |
-|---|---:|---|
-| `--size` | `256` | Final square canvas size. Teams output is fixed at 256 × 256. |
-| `--padding` | `0.10` | Transparent margin. Recommended range: 0.08 to 0.12. |
-| `--tolerance` | `34` | Exterior-background matching tolerance. |
-| `--edge-softness` | `0.55` | Alpha-edge smoothing amount. |
+## Choose the right path
+
+| Goal | Use | Acceptance rule |
+|---|---|---|
+| Make a new reaction-emoji concept | [Prompt Pack](prompts/teams-emoji-creator-prompts.md) | Creative output only; not automatically a Teams asset |
+| Preserve an existing emoji and remove its background | [`SKILL.md`](SKILL.md) | Subject remains source-faithful |
+| One-off processing in ChatGPT or Claude | [Chat quick prompt](prompts/chatgpt-teams-emoji-quick-prompt.en.md) | Accept only a downloadable file that works in Teams |
+| Repeated or technical processing | Python helper or file-capable agent | Run export checks and visual validation |
 
 ## Output standard
 
-| Item | Standard |
+| Item | Requirement |
 |---|---|
-| Format | Lossless WEBP |
-| Canvas | Exactly 256 × 256 px |
-| Transparency | Real RGBA alpha channel |
+| File | WEBP |
+| Canvas | 256 × 256 px |
+| Transparency | Real Alpha when file metadata can be verified |
 | Padding | About 8–12% transparent margin |
-| Subject | Complete, centered, and not redrawn |
-| Edge quality | Smooth, decontaminated, with no white or gray halo |
-| Validation | `#FFFFFF`, `#ECEEF6`, `#242424`, and `#000000` |
+| Subject | Complete, centered, and not redesigned |
+| Edge | No white box, white halo, gray fringe, or checkerboard residue |
+| Review surfaces | `#FFFFFF`, `#ECEEF6`, `#242424`, `#000000` |
 
-## Workflow
+## Validation and regression tests
 
-1. Inspect the source and select flat-background segmentation, semantic segmentation, or manual masking.
-2. Remove only exterior background connected to the image edge.
-3. Preserve enclosed white details such as eye whites, gloss, teeth, and logos.
-4. Build a clean alpha matte and decontaminate partially transparent edges.
-5. Fit the full subject into a 256 × 256 canvas with safe padding.
-6. Verify the actual exported file and inspect validation previews.
+Run the deterministic helper test:
+
+```bash
+python -m pip install -r requirements.txt
+python tests/test_helper.py
+```
+
+See [Self Test](tests/SELF_TEST.md) for the fixture catalogue, expected behavior, and the separate manual compatibility procedure for chat models.
+
+## Limitations
+
+- The reference helper is optimized for flat or nearly flat backgrounds.
+- Complex photographs, hair, fur, glass, smoke, or translucent materials need semantic segmentation or manual mask refinement.
+- A preview is not a file. If a chat tool cannot return a downloadable asset, it has not completed the task.
+- If a chat tool returns a downloadable file but cannot expose metadata, test the file in Teams before calling it verified.
 
 ## Project layout
 
@@ -117,25 +101,19 @@ teams-emoji-alpha-cleanup-skill/
 │  ├─ CHATGPT_CLAUDE_GUIDE.en.md
 │  ├─ CHATGPT_CLAUDE_GUIDE.md
 │  └─ images/
-│     ├─ before-after-teams.svg
-│     └─ validation-backgrounds.svg
 ├─ prompts/
+│  ├─ chatgpt-teams-emoji-quick-prompt.en.md
+│  ├─ teams-emoji-quick.zh-CN.md
 │  └─ teams-emoji-creator-prompts.md
-└─ scripts/
-   └─ clean_teams_emoji.py
+├─ scripts/
+│  └─ clean_teams_emoji.py
+└─ tests/
+   ├─ generate_fixtures.py
+   ├─ test_helper.py
+   ├─ SELF_TEST.md
+   └─ SELF_TEST.zh-CN.md
 ```
-
-## Source of truth
-
-`SKILL.md` is the authoritative execution contract for agents. It contains dependencies, supported inputs, default parameters, source-access checks, fallback rules, filename derivation, and mandatory technical acceptance checks.
-
-## Limitations
-
-- The reference helper is optimized for flat or nearly flat backgrounds.
-- Complex photographic scenes, hair, fur, glass, smoke, or translucent materials need semantic segmentation or manual mask refinement.
-- A tool that cannot produce and verify a genuine transparent WEBP must not claim the output is Teams-ready.
-- A chat preview is not proof of a real transparent file.
 
 ## License
 
-No license file is included yet. Add a license before redistributing or accepting outside contributions.
+No license file is included yet. Add one before redistributing or accepting outside contributions.
