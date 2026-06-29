@@ -116,4 +116,4 @@ teams-emoji-alpha-cleanup-skill/
 
 ## License
 
-No license file is included yet. Add one before redistributing or accepting outside contributions.
+This project is licensed under the [MIT License](LICENSE).
