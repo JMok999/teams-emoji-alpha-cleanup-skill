@@ -1,6 +1,6 @@
 ---
 name: teams-emoji-alpha-cleanup
-description: Convert an accessible user-uploaded raster emoji or icon into a Microsoft Teams-ready 256×256 lossless WEBP using source-faithful editing, true RGBA transparency, clean alpha edges, and export checks. Do not substitute a redesigned image or a screenshot.
+description: Convert an accessible user-uploaded raster emoji or icon into a Microsoft Teams-ready 256×256 transparent asset using source-faithful editing, real RGBA transparency, clean alpha edges, and export checks. The reference workflow exports lossless WEBP; chat tools may return an honestly labeled RGBA PNG fallback when WEBP export is unavailable.
 ---
 
 # Teams Emoji Alpha Cleanup
@@ -43,11 +43,11 @@ Accept a static raster image readable by Pillow:
 - TIFF
 - GIF: process the first frame only
 
-The final asset is always a static WEBP. SVG, PDF, HEIC, AVIF, and proprietary formats need prior rasterization or a suitable decoder.
+The final asset is static. SVG, PDF, HEIC, AVIF, and proprietary formats need prior rasterization or a suitable decoder.
 
-## Core output contract
+## Strict reference export contract
 
-A final validated asset must meet all of the following:
+For the Python helper, a file-capable agent, or any environment that can inspect and export files, the final validated asset must meet all of the following:
 
 - lossless WEBP
 - exactly 256 × 256 px
@@ -58,6 +58,20 @@ A final validated asset must meet all of the following:
 - smooth anti-aliased edges with no white or gray halo
 - internal white details preserved when not connected to the exterior background
 - no baked white, black, colored, or checkerboard background
+
+JPEG is never an acceptable final transparent asset because it has no Alpha channel.
+
+## Chat export fallback
+
+Some chat-image tools can return a downloadable PNG but cannot export WEBP. In that environment, a PNG is allowed only as a chat fallback when all of these are true:
+
+- the returned file is an actual downloadable PNG, not a screenshot or preview;
+- it is exactly 256 × 256 px when the platform permits that size;
+- it has real RGBA Alpha when file metadata is available;
+- its actual extension and format are reported honestly as PNG;
+- it is labeled a **Teams candidate** until the user uploads it to Teams and checks it on real chat surfaces.
+
+Do not label a PNG as WEBP. Do not return JPG or JPEG as a transparent final asset. Do not infer Alpha from the appearance of a checkerboard preview.
 
 ## Default parameters
 
@@ -126,9 +140,11 @@ Example:
 python scripts/clean_teams_emoji.py source.jpg source_teams_emoji_256.webp
 ```
 
+The helper always outputs strict lossless WEBP.
+
 ### Direct implementation
 
-If the helper is unavailable, use Pillow or an equivalent pixel-editing workflow to complete the same segmentation, alpha cleanup, canvas fitting, and verification steps.
+If the helper is unavailable, use Pillow or an equivalent pixel-editing workflow to complete the same segmentation, alpha cleanup, canvas fitting, and verification steps. Prefer strict lossless WEBP whenever file conversion is available.
 
 ### Chat environments
 
@@ -136,13 +152,14 @@ A chat model may be used when it can access the supplied image as an editable so
 
 - Do not run a long capability interview by default.
 - Attempt direct source-image processing first.
-- If the result is a downloadable file, verify technical metadata when the environment exposes it.
-- If metadata cannot be inspected, label the file as **unverified** rather than claiming all checks passed. The user must test the downloaded file in Teams.
+- Prefer a downloadable 256 × 256 WEBP.
+- When the chat tool can only export PNG, return a real transparent PNG and state the actual format.
+- If file metadata cannot be inspected, label the download as **unverified** rather than claiming all checks passed. The user must test the downloaded file in Teams.
 - If the image cannot be edited or no downloadable file can be returned, stop with one concise sentence. Do not generate a substitute.
 
 ## Output filename
 
-Use:
+For strict local export, use:
 
 ```text
 <sanitized-input-stem>_teams_emoji_256.webp
@@ -157,7 +174,11 @@ sunglass_ok.jpg
 → sunglass-ok_teams_emoji_256.webp
 ```
 
+In chat environments, keep the platform's real extension. Do not rename a PNG file to `.webp`.
+
 ## Mandatory verification
+
+### Strict WebP path
 
 When file inspection is available, reopen the exported file and verify:
 
@@ -167,6 +188,15 @@ When file inspection is available, reopen the exported file and verify:
 - Alpha channel is present
 - every pixel on the outer canvas border has Alpha = 0
 - the subject is non-empty and remains inside the padding area
+
+### Chat PNG fallback
+
+When a chat tool returns PNG instead:
+
+- confirm the actual extension is `.png`;
+- inspect Alpha and dimensions when metadata is available;
+- do not call it a verified WEBP;
+- test the downloaded file by uploading it to Teams before calling it verified.
 
 Create review previews on:
 
@@ -181,13 +211,22 @@ A preview image is never the final deliverable.
 
 ## Delivery response
 
-### Validated file
+### Validated WebP file
 
 Use no more than two short lines:
 
 ```text
 Done: <filename>
 256 × 256 transparent WEBP, verified for Teams.
+```
+
+### Downloadable PNG chat fallback
+
+Use no more than two short lines:
+
+```text
+Done: <filename>
+Transparent PNG Teams candidate. Please confirm it after upload.
 ```
 
 ### Downloadable but unverified chat file
